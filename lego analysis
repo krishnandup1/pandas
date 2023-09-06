@@ -1,0 +1,54 @@
+import pandas as pd
+
+df=pd.read_csv('D:\pands\lego analysis\sets.csv')
+lego=pd.read_csv('D:\pands\lego analysis\lego_sets.csv')
+parent_theme=pd.read_csv('D:\pands\lego analysis\parent_themes.csv')
+
+theme=pd.read_csv('D:\pands\lego analysis\eme.csv')
+
+df.head()
+
+lego.head()
+
+parent_theme.head()
+
+theme.head()
+
+len(df.name)
+
+merged=lego.merge(parent_theme,left_on='parent_theme',right_on='name')
+
+merged.head()
+
+merged.drop(columns='name_y',inplace=True)
+
+merged.head(20)
+
+new_df=merged[merged['is_licensed']==True]
+
+new_df
+
+#licensed=merged[merged['is_licensed']==True]
+new_df.dropna(inplace=True)
+
+star_wars=new_df[new_df['parent_theme']=='Star Wars']
+
+star_wars
+
+the_force=round((star_wars.shape[0]/new_df.shape[0])*100,2)
+
+print(f'{the_force} %')
+
+new_df_sort=new_df.sort_values('year')
+new_df_sort['count']=1
+
+summed_df=new_df_sort.groupby(['year','parent_theme']).sum().reset_index()
+
+
+max_df=summed_df.sort_values('count',ascending=False).drop_duplicates(['year'])
+
+max_df.sort_values('year',inplace=True)
+
+max_df
+
+new_era=2017
